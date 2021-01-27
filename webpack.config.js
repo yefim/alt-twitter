@@ -1,52 +1,14 @@
 const path = require("path");
 const webpack = require("webpack");
 const packageJson = require("./package.json");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ZipPlugin = require("zip-webpack-plugin");
-
-// Regexes for style files
-const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
-const sassRegex = /\.(scss|sass)$/;
-const sassModuleRegex = /\.module\.(scss|sass)$/;
-
-function getStyleLoaders({ cssOptions = {}, preProcessor } = {}) {
-  const loaders = [
-    // Turn CSS into JS modules that inject <style> tags
-    "style-loader",
-    {
-      // Resolve paths in CSS files
-      loader: "css-loader",
-      options: cssOptions,
-    },
-    {
-      // Run PostCSS actions
-      loader: "postcss-loader",
-      options: {
-        postcssOptions: {
-          plugins: [require("autoprefixer")],
-        },
-      },
-    },
-  ];
-  if (preProcessor) {
-    loaders.push({
-      loader: preProcessor,
-    });
-  }
-  return loaders;
-}
 
 module.exports = (env, argv) => {
   const isDev = argv.mode === "development";
   return {
     entry: {
-      background: "./src/background/background.ts",
-      popup: "./src/components/Popup/index.tsx",
-      options: "./src/components/Options/index.tsx",
-      welcome: "./src/components/Welcome/index.tsx",
       example: "./src/contentScripts/example.ts",
     },
 
@@ -82,49 +44,6 @@ module.exports = (env, argv) => {
             },
             { loader: "eslint-loader" },
           ],
-        },
-
-        // CSS
-        {
-          test: cssRegex,
-          exclude: cssModuleRegex,
-          use: getStyleLoaders(),
-        },
-        {
-          test: cssModuleRegex,
-          use: getStyleLoaders({ cssOptions: { modules: true } }),
-        },
-        {
-          test: sassRegex,
-          exclude: sassModuleRegex,
-          use: getStyleLoaders({ preProcessor: "sass-loader" }),
-        },
-        {
-          test: sassModuleRegex,
-          use: getStyleLoaders({
-            cssOptions: { modules: true },
-            preProcessor: "sass-loader",
-          }),
-        },
-
-        // Assets
-        {
-          test: /\.(png|svg|mp4)$/,
-          loader: "file-loader",
-          options: {
-            name: "[name].[ext]",
-          },
-        },
-        {
-          test: /\.(woff|woff2)$/,
-          use: {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]",
-              outputPath: "fonts/",
-              esModule: false,
-            },
-          },
         },
       ],
     },
@@ -206,25 +125,6 @@ module.exports = (env, argv) => {
             },
           },
         ],
-      }),
-
-      // Generate HTML files
-      new HtmlWebpackPlugin({
-        template: path.join(__dirname, "src", "index.html"),
-        filename: "popup.html",
-        chunks: ["popup"],
-      }),
-
-      new HtmlWebpackPlugin({
-        template: path.join(__dirname, "src", "index.html"),
-        filename: "options.html",
-        chunks: ["options"],
-      }),
-
-      new HtmlWebpackPlugin({
-        template: path.join(__dirname, "src", "index.html"),
-        filename: "welcome.html",
-        chunks: ["welcome"],
       }),
 
       !isDev &&
