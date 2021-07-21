@@ -1,5 +1,3 @@
-console.log("🔥 Hello from Extension Starter Kit! 🔥");
-
 const REMARKS = [
   'Consider shaming them respectfully.',
   'Maybe they had a good reason.',
@@ -19,6 +17,7 @@ document.addEventListener('DOMNodeInserted', (event) => {
   const el = event.target;
 
   if (el?.alt) {
+    // An HTML element's title is a hoverable tooltip.
     el.title = el.alt === 'Image' ? `OP did not add an alt. ${REMARKS[Math.floor(Math.random() * REMARKS.length)]}` : el.alt;
   }
 });
