@@ -3,7 +3,7 @@ console.log("🔥 Hello from Extension Starter Kit! 🔥");
 const REMARKS = [
   'Consider shaming them respectfully.',
   'Maybe they had a good reason.',
-  'Wow, what a douche.',
+  'Wow, what a meanie.',
   'How could they do such a thing?',
   'I hope they have a good day.',
   'Please remind them gently over DM.',
@@ -11,7 +11,7 @@ const REMARKS = [
   'I can\'t believe they\'ve done this.',
   '🙈',
   'Oh no, what happens now?',
-  'Tweet at them aggressively to let them know.',
+  'Tweet at them passive aggressively to let them know.',
   'It\'s okay though because this image definitely doesn\'t need one. I\'ve checked.',
 ];
 
